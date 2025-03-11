@@ -48,4 +48,4 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/var"
+    path: "/tmp"
