@@ -15,12 +15,19 @@ spec:
         app: nifi
     spec:
       imagePullSecrets:
-      - name: docker-registry-secret
+        - name: docker-registry-secret
       containers:
-      - name: nifi
-        image: vikal190/nifi-latest:latest
-        ports:
-        - containerPort: 9093
+        - name: nifi
+          image: vikal190/nifi-latest:latest
+          ports:
+            - containerPort: 9093
+          volumeMounts:
+            - name: nifi-storage
+              mountPath: /opt
+      volumes:
+        - name: nifi-storage
+          persistentVolumeClaim:
+            claimName: nifi-pvc
 ---
 apiVersion: v1
 kind: Service
@@ -49,3 +56,15 @@ spec:
     - ReadWriteOnce
   hostPath:
     path: "/opt"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nifi-pvc
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
