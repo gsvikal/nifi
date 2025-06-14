@@ -48,4 +48,4 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/tmp"
+    path: "/opt"
